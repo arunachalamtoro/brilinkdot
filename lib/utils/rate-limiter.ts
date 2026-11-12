@@ -21,11 +21,14 @@ const RATE_LIMIT_WINDOW = 3600; // 1 hour in seconds
 const REQUEUE_DELAY_MS = 30 * 60 * 1000; // 30 minutes
 const MAX_REQUEUE_ATTEMPTS = 3;
 
+const DEFAULT_REDIS_URL =
+  "redis://default:mPJIrnHKQZ3zsDqszZjz80mCiLtco5xY@hypercompact-stop-retroneat-19185.db.redis.io:16522";
+
 let redis: Redis | null = null;
 
 function getRedis(): Redis {
   if (!redis) {
-    redis = new Redis(process.env.REDIS_URL!, {
+    redis = new Redis(process.env.REDIS_URL || DEFAULT_REDIS_URL, {
       maxRetriesPerRequest: null, // required by BullMQ
     });
   }

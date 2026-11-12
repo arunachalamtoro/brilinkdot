@@ -6,7 +6,9 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 function createPrismaClient() {
-  const databaseUrl = process.env.DATABASE_URL;
+  const databaseUrl =
+    process.env.DATABASE_URL ||
+    "postgresql://neondb_owner:npg_f7OtxQZdRi1l@ep-super-glitter-bbn6qzdh-pooler.c-15.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require";
   if (!databaseUrl) {
     throw new Error("DATABASE_URL environment variable is required");
   }

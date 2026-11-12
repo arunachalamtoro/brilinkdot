@@ -12,9 +12,13 @@ export const newServiceToken = () => `orp_${randomBytes(32).toString("base64url"
 let redis: Redis | undefined;
 let connecting: Promise<unknown> | undefined;
 
+const DEFAULT_REDIS_URL =
+  "redis://default:mPJIrnHKQZ3zsDqszZjz80mCiLtco5xY@hypercompact-stop-retroneat-19185.db.redis.io:16522";
+
 async function limiter() {
-  if (!process.env.REDIS_URL) throw new ApiError("Integration rate limiter unavailable", 503);
-  redis ??= new Redis(process.env.REDIS_URL, { maxRetriesPerRequest: 1, enableOfflineQueue: false, lazyConnect: true,
+  const redisUrl = process.env.REDIS_URL ?? DEFAULT_REDIS_URL;
+  if (!redisUrl) throw new ApiError("Integration rate limiter unavailable", 503);
+  redis ??= new Redis(redisUrl, { maxRetriesPerRequest: 1, enableOfflineQueue: false, lazyConnect: true,
     connectTimeout: 3000, retryStrategy: () => null });
   // Prevent connection errors from being logged with infrastructure details.
   if (!redis.listenerCount("error")) redis.on("error", () => undefined);

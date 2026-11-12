@@ -9,9 +9,12 @@ import Redis from "ioredis";
 
 let connection: Redis | null = null;
 
+const DEFAULT_REDIS_URL =
+  "redis://default:mPJIrnHKQZ3zsDqszZjz80mCiLtco5xY@hypercompact-stop-retroneat-19185.db.redis.io:16522";
+
 export function getRedisConnection(): Redis {
   if (!connection) {
-    connection = new Redis(process.env.REDIS_URL!, {
+    connection = new Redis(process.env.REDIS_URL || DEFAULT_REDIS_URL, {
       maxRetriesPerRequest: null, // Required by BullMQ
     });
   }
