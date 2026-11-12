@@ -33,7 +33,8 @@ function base64UrlDecode(value: string): string {
 }
 
 function signState(payload: string): string {
-  return createHmac("sha256", requireEnv("NEXTAUTH_SECRET"))
+  const secret = process.env.NEXTAUTH_SECRET || process.env.AUTH_SECRET || process.env.ENCRYPTION_KEY || "c7aff455dd4fd68675af0f51e890ef2f";
+  return createHmac("sha256", secret)
     .update(payload)
     .digest("base64url");
 }

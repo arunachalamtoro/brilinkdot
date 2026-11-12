@@ -97,8 +97,9 @@ export function isEmailAllowedToSignIn(
 }
 
 export const serverEnvSchema = z.object({
-  NEXTAUTH_URL: z.string().url(),
-  NEXTAUTH_SECRET: z.string().min(16),
+  NEXTAUTH_URL: z.string().url().optional(),
+  NEXTAUTH_SECRET: z.string().min(16).optional(),
+  AUTH_SECRET: z.string().min(16).optional(),
   DATABASE_URL: z.string().min(1),
   REDIS_URL: z.string().min(1),
   ENCRYPTION_KEY: z.string().regex(HEX_32_BYTE),

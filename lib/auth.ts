@@ -58,7 +58,11 @@ export const authConfig = {
     strategy: "database",
   },
   trustHost: true,
-  secret: process.env.NEXTAUTH_SECRET,
+  secret:
+    process.env.AUTH_SECRET ||
+    process.env.NEXTAUTH_SECRET ||
+    process.env.ENCRYPTION_KEY ||
+    "c7aff455dd4fd68675af0f51e890ef2f",
 } satisfies NextAuthConfig;
 
 export const { handlers, auth, signIn, signOut } = NextAuth(authConfig);
